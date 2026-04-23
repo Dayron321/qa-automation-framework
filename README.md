@@ -1,6 +1,8 @@
 # QA Automation Framework 🎭
 
-> Framework profesional E2E construido con **Playwright + TypeScript** y pruebas de carga con **k6**.  
+[![Playwright Tests](https://github.com/Dayron321/qa-automation-framework/actions/workflows/playwright.yml/badge.svg)](https://github.com/Dayron321/qa-automation-framework/actions/workflows/playwright.yml)
+
+> Framework profesional E2E construido con **Playwright + TypeScript** y pruebas de carga con **k6**.
 > Aplicación bajo prueba: [SauceDemo](https://www.saucedemo.com)
 
 ---
@@ -36,7 +38,7 @@ qa-automation-framework/
 
 ```bash
 # 1. Clonar el repositorio
-git clone <tu-repo>
+git clone https://github.com/Dayron321/qa-automation-framework.git
 cd qa-automation-framework
 
 # 2. Instalar dependencias
