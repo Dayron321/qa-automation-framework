@@ -1,0 +1,74 @@
+# .github/workflows/playwright.yml
+# Pipeline de CI/CD para correr los tests E2E en cada Pull Request y push a main
+
+name: 🎭 Playwright E2E Tests
+
+on:
+  # Se dispara en cada push a ramas principales
+  push:
+    branches: [main, develop]
+  # Se dispara en cada Pull Request contra main
+  pull_request:
+    branches: [main]
+  # Permite correr manualmente desde la UI de GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 🧪 E2E Tests — ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # ─── Matriz: corre el job en paralelo para cada browser ────────────────
+    strategy:
+      fail-fast: false # Si un browser falla, los demás continúan
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      # ─── Checkout del código ──────────────────────────────────────────────
+      - name: 📥 Checkout repositorio
+        uses: actions/checkout@v4
+
+      # ─── Setup de Node.js ─────────────────────────────────────────────────
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ─── Instalación de dependencias ──────────────────────────────────────
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      # ─── Instalación de browsers de Playwright ────────────────────────────
+      # --with-deps instala también las dependencias del SO (librerías de Linux)
+      - name: 🌐 Instalar browsers de Playwright
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      # ─── Ejecución de tests ───────────────────────────────────────────────
+      - name: 🎭 Correr tests E2E
+        run: npx playwright test --project=${{ matrix.browser }}
+        env:
+          CI: true
+          BASE_URL: ${{ secrets.BASE_URL || 'https://www.saucedemo.com' }}
+          STANDARD_USER: ${{ secrets.STANDARD_USER || 'standard_user' }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD || 'secret_sauce' }}
+
+      # ─── Upload de reportes (siempre, incluso si los tests fallan) ────────
+      - name: 📊 Subir reporte HTML
+        uses: actions/upload-artifact@v4
+        if: always() # Sube el reporte aunque el job falle
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 14 # Retiene los artefactos 14 días
+
+      # ─── Upload de resultados de tests fallidos ───────────────────────────
+      - name: 🐛 Subir evidencia de fallos (screenshots/videos)
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 7

@@ -1,0 +1,84 @@
+{
+  "compilerOptions": {
+
+    // ─── Target y módulos ─────────────────────────────────────────────────────
+    // ES2020 es el target solicitado: soporta optional chaining, nullish
+    // coalescing, BigInt y Promise.allSettled de forma nativa.
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020", "DOM"],
+
+    // ─── Resolución de módulos ────────────────────────────────────────────────
+    // "node" es la estrategia clásica, compatible con ts-node y CommonJS.
+    "moduleResolution": "node",
+
+    // ─── Rutas absolutas con alias ────────────────────────────────────────────
+    // Permite importar con "@pages/LoginPage" en vez de "../../src/pages/LoginPage".
+    // Estos alias deben coincidir con los configurados en el bundler (si aplica).
+    "baseUrl": ".",
+    "paths": {
+      // Alias con wildcard — para importar archivos individuales de cada carpeta
+      // Ejemplo: import { LoginPage } from '@pages/LoginPage'
+      "@pages/*":    ["src/pages/*"],
+      "@fixtures/*": ["src/fixtures/*"],
+      "@utils/*":    ["src/utils/*"],
+      "@data/*":     ["src/data/*"],
+
+      // Alias directo al barrel de fixtures — NECESARIO para el import sin wildcard
+      // Ejemplo: import { test, expect } from '@fixtures'
+      // Sin esta entrada TypeScript no resuelve '@fixtures' como módulo.
+      "@fixtures":   ["src/fixtures/index.ts"]
+    },
+
+    // ─── Compilación ──────────────────────────────────────────────────────────
+    // rootDir incluye tests/ y src/ desde la raíz del proyecto.
+    "rootDir": ".",
+    "outDir": "./dist",
+    "sourceMap": true,        // Genera .map para depuración en VS Code
+    "declaration": true,      // Genera archivos .d.ts (útil si publicas la lib)
+    "removeComments": false,  // Preserva los comentarios en el output compilado
+
+    // ─── Interoperabilidad ────────────────────────────────────────────────────
+    // esModuleInterop: permite import dotenv from 'dotenv' (sin * as dotenv)
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true, // Permite importar archivos .json directamente
+
+    // ─── Comprobación estricta de tipos (REQUERIDO: strict: true) ────────────
+    // "strict" habilita: noImplicitAny, strictNullChecks, strictFunctionTypes,
+    // strictBindCallApply, strictPropertyInitialization y noImplicitThis.
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,      // Error si declaras variables y no las usas
+    "noUnusedParameters": true,  // Error si declaras parámetros y no los usas
+    "noImplicitReturns": true,   // Error si una función no siempre retorna valor
+    "forceConsistentCasingInFileNames": true,
+
+    // ─── Tipos globales ───────────────────────────────────────────────────────
+    // Incluye los tipos de Node.js (@types/node) de forma global en todo el proyecto
+    "types": ["node"],
+
+    // ─── Compilación incremental ──────────────────────────────────────────────
+    // Acelera compilaciones sucesivas guardando caché en .tsbuildinfo
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+
+  // ─── Archivos incluidos en la compilación ─────────────────────────────────
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts",
+    "global-setup.ts",
+    "global-teardown.ts"
+  ],
+
+  // ─── Archivos excluidos de la compilación ─────────────────────────────────
+  "exclude": [
+    "node_modules",
+    "dist",
+    "playwright-report",
+    "test-results"
+  ]
+}

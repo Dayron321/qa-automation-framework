@@ -1,0 +1,76 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# .gitignore — qa-automation-framework
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── Dependencias ────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── TypeScript compilado ────────────────────────────────────────────────────
+dist/
+build/
+*.js.map
+.tsbuildinfo
+
+# ─── Variables de entorno (NUNCA subir credenciales al repo) ─────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+
+# ─── Artefactos de Playwright ────────────────────────────────────────────────
+# Los reportes y videos se regeneran en cada ejecución, no tienen valor en Git
+playwright-report/
+test-results/
+allure-report/
+allure-results/
+
+# Los binarios de browsers los instala "playwright install" en cada máquina/CI
+# Puedes incluir esta línea si clonas en Linux/Mac y los browsers cambian de path
+# /home/**/.cache/ms-playwright/
+
+# ─── Artefactos de k6 ────────────────────────────────────────────────────────
+k6-results/
+*.influxdb
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Sistema operativo ───────────────────────────────────────────────────────
+.DS_Store          # macOS
+Thumbs.db          # Windows
+desktop.ini        # Windows
+*.lnk              # Windows shortcuts
+
+# ─── IDEs y editores ─────────────────────────────────────────────────────────
+.idea/             # JetBrains (WebStorm, IntelliJ)
+*.iml
+.project
+.classpath
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code — se recomienda subir .vscode/extensions.json pero NO settings.json
+# porque puede contener rutas absolutas específicas de tu máquina
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# ─── Coverage ────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── Caché de herramientas ───────────────────────────────────────────────────
+.eslintcache
+.prettier-cache
+.cache/
+.parcel-cache/

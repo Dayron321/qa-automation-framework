@@ -1,0 +1,24 @@
+{
+  "name": "qa-automation-framework",
+  "version": "1.0.0",
+  "description": "Framework E2E profesional con Playwright, TypeScript y k6 para pruebas en SauceDemo",
+  "author": "Dayron",
+  "license": "MIT",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:report": "playwright show-report",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:load": "k6 run tests/performance/load.test.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.9.3"
+  }
+}
